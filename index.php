@@ -1,4 +1,34 @@
 <?php
+	
+require_once 'app/init.php';
+
+if( isset($_GET['q']) ){
+
+	$q = $_GET['q'];
+
+	$query = $es->search([
+		'body' => [
+			'query' => [
+				'bool' => [
+					'should' => [
+						'match' => ['title' => $q],
+						'match' => ['body' => $q],
+						'match' => ['keywords' => $q],
+					]
+				]
+			] 
+		]
+	]);
+
+
+
+	// echo '<pre>', print_r($query), '</pre>';
+	// die();
+
+	if( $query['hits']['total'] >= 1){
+		$results = $query['hits']['hits'];
+	}
+}
 
 ?>
 
@@ -19,6 +49,20 @@
 		<button type="submit">Search</button>
 	</form>
 
-	<div class="results"></div>
+	<?php if( isset($results) ) {
+
+		foreach ($results as $r) {
+			
+			?>
+
+		<div class="result">
+			<a href="<?= $r['_id'] ?>"><?=$r['_source']['title']?></a>
+			<div class="result-keywords"><?= $r['_source']['keywords'] //implode(', ', $r['_source']['keywords'])?></div>
+		</div>
+
+
+	<?php }
+
+	} ?>
 </body>
 </html>

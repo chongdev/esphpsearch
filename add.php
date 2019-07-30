@@ -1,4 +1,33 @@
 <?php
+	
+require_once 'app/init.php';
+
+if( !empty($_POST) ){
+
+	if( isset($_POST['title'], $_POST['body'], $_POST['keywords']) ){
+
+		$title = $_POST['title'];
+		$body = $_POST['body'];
+		$keywords = $_POST['keywords'];
+
+		$indexed = $es->index([
+			'index' => 'articles',
+			'type' => 'article',
+			'body' => [
+				'title' => $title,
+				'body' => $body,
+				'keywords' => $keywords
+			]
+		]);
+
+
+		if( $indexed ){
+			print_r($indexed);
+		}
+
+		
+	}
+}
 
 ?>
 
