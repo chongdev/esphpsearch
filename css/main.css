@@ -1,0 +1,12 @@
+label{
+	display: block;
+	margin-bottom: 4px;
+}
+input, textarea{
+	width: 200px;
+	padding: 7px 8px;
+
+}
+.mbl{
+	margin-bottom: 15px;
+}
